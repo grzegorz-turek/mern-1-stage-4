@@ -9,6 +9,7 @@ const rootReducer = combineReducers({
   posts,
 });
 
+// create store
 const store = createStore(rootReducer,
     compose(
         applyMiddleware(thunk),

@@ -1,9 +1,9 @@
 import React from 'react';
+import SinglePostContainer from '../../features/SinglePost/SinglePostContainer';
 
 const SinglePostPage = props => (
     <div>
-        <h1>Single Post Page</h1>
-        <p>Dynamic Endpoint: {props.match.params.id}</p>
+        <SinglePostContainer id={props.match.params.id} />
     </div>
 );
 

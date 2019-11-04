@@ -1,21 +1,31 @@
 const express = require('express');
 const cors = require('cors');
+const config = require('./config');
+const mongoose = require('mongoose');
+const loadTestData = require('./testData');
+const helmet = require('helmet');
 
 const app = express();
 
+// import routes
+const postRoutes = require('./routes/post.routes');
+
 app.use(cors());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true}));
 app.use(express.json());
+app.use(helmet());
+app.use('/api', postRoutes);
 
-app.get('/api/posts', (req, res) => {
-    const data = [
-        { id: '1adfasf', title: 'Lorem Ipsum', content: 'Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit. Dome pro bono a volare que serra cantare alupe degrassa como biene pertuto la vita. Dolce gusto semperit veni vidi vici a rosa pulchra est. Sono dominci urbi et odbi vannusem compile a peringo santoro deminter composus. A vicere demelius condirmpo gutaer alma mater horno coturas domenica.' },
-        { id: '2evxc34', title: 'Lorem Ipsum II', content: 'Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit. Dome pro bono a volare que serra cantare alupe degrassa como biene pertuto la vita. Dolce gusto semperit veni vidi vici a rosa pulchra est. Sono dominci urbi et odbi vannusem compile a peringo santoro deminter composus. A vicere demelius condirmpo gutaer alma mater horno coturas domenica.' },
-        { id: 's9skc9s', title: 'Lorem Ipsum III', content: 'Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit. Dome pro bono a volare que serra cantare alupe degrassa como biene pertuto la vita. Dolce gusto semperit veni vidi vici a rosa pulchra est. Sono dominci urbi et odbi vannusem compile a peringo santoro deminter composus. A vicere demelius condirmpo gutaer alma mater horno coturas domenica.' }
-    ]
-    res.json(data);
+// connects our back end code with the database
+mongoose.connect(config.DB, { useNewUrlParser: true });
+let db = mongoose.connection;
+
+db.once('open', () => {
+  console.log('Connected to the database');
+  loadTestData();
 });
+db.on('error', (err) => console.log('Error ' + err));
 
-app.listen(8000, function(){
-    console.log('Server is running on port:', 8000);
+app.listen(config.PORT, function() {
+  console.log('Server is running on Port:', config.PORT);
 });

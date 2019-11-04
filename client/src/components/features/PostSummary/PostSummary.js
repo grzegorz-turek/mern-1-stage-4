@@ -4,6 +4,7 @@ import Button from '../../common/Button/Button';
 import SmallTitle from '../../common/SmallTitle/SmallTitle';
 import HtmlBox from '../../common/HtmlBox/HtmlBox';
 import cutText from './PostSummaryContainer';
+import { Link } from 'react-router-dom';
 import './PostSummary.scss';
 
 const PostSummary = ({ id, title, content }) => (
@@ -11,7 +12,7 @@ const PostSummary = ({ id, title, content }) => (
         <SmallTitle>{title}</SmallTitle>
         <HtmlBox>{cutText(content, 250)}</HtmlBox>
         <Button variant='primary'>
-            Read more
+            <Link to={`/posts/${id}`}>Read more</Link>
         </Button>
     </article>
 );
